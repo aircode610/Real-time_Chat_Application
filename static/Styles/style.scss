@@ -1,0 +1,108 @@
+$default_blue : rgb(38, 124, 181);
+$grey_text : #87888a;
+$light-grey: rgb(215,225,232);
+
+* {
+  font-family: Arial;
+}
+
+html, body {
+  height: 100%;
+  padding: 10px;
+}
+
+.flack-title {
+  font-size: 21px;
+}
+
+.center {
+  position: relative;
+  height: 55px;
+}
+
+.profile {
+  margin: 0;
+  position: absolute;
+  top: 35%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+
+.profile-icon {
+  border-radius: 50%;
+  padding: 0;
+}
+
+.profile-icon:focus {
+  outline: white solid 0px;
+  box-shadow: none;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.add-btn {
+  padding: 0;
+  padding-left: 5px;
+}
+
+.add-btn:focus {
+  outline: white solid 0px;
+  box-shadow: none;
+}
+
+#content {
+  height: -moz-calc(100% - 70px); /* Firefox */
+  height: -webkit-calc(100% - 72px); /* Chrome, Safari */
+  height: calc(100% - 72px); /* IE9+ and future browsers */
+}
+
+#left-nav {
+  height: 100%;
+}
+
+#channels {
+  color:$grey_text;
+  font-size: 18px;
+}
+
+#channel-view{
+  margin: 15px 0px;
+}
+
+#channel-image {
+  border-radius: 10%;
+  margin-right: 8px;
+}
+
+#channel-text {
+  color: $grey_text;
+}
+
+#channel-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#message-box {
+  padding: 0;
+  height: 100%;
+  border: 1px solid $light-grey;
+  border-radius: 5px;
+}
+
+#message-top {
+  height: 50px;
+  border-bottom: 1px solid $light-grey;
+}
+
+#sending-messages {
+  position: absolute;
+  bottom: 10px;
+}
+
+#send-btn {
+  padding: 0;
+}
