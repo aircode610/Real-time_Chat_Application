@@ -12,6 +12,8 @@
 
     <link rel="stylesheet" href="{{url_for('static', filename='Styles/style.css')}}">
 
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Varela+Round" />
+
     <link rel="icon" href="{{url_for('static', filename='Images/chat.jpg')}}">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -46,7 +48,7 @@
 
             <form class="mt-4">
 
-              <input type="text" name="display_name" class="form-control d-inline col-9" id="display-name" aria-describedby="display" placeholder="Enter display name">
+              <input type="text" name="display_name" class="form-control d-inline col-8 col-sm-9" id="display-name" aria-describedby="display" placeholder="Enter display name">
               <button type="submit" name="button" onclick="display()" class="btn btn-primary d-inline mb-1 ml-2">Submit</button>
 
             </form>
@@ -63,24 +65,18 @@
 
       <span class="">
         <img src="{{url_for('static', filename='Images/chat.jpg')}}" width="50" height="50">
-        <span class="flack-title">Flack!</span>
+        <span id="flack-title">Flack!</span>
       </span>
 
-      <span class="float-right mt-1 profile">
+      <span class="float-right" id="profile">
 
-        <div class="btn-group">
+        <span> signed in as </span>
+        <span id="display-name-show"></span>
+        <br>
 
-          <button type="button" class="profile-icon btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="d-block mx-auto">
 
-            <img src="{{url_for('static', filename='Images/profile.png')}}" class="mr-1 profile-icon" width="42" height="42">
-
-          </button>
-
-          <div class="dropdown-menu dropdown-menu-right">
-
-            <span class="profile-name dropdown-item" type="button" id="display-name-show">No channel chosen</span>
-
-          </div>
+          <p onclick="logout()" id="logout">Log out</p>
 
         </div>
 
@@ -90,12 +86,12 @@
 
     <div id="content">
 
-      <div class="col-3 p-0 float-left" id="left-nav">
+      <div class="col-3 p-0 float-left d-none d-sm-none d-md-block" id="left-nav">
 
         <form class="mt-4 mb-3" id="channel" action="" method="">
 
           <input type="text" name="channel_name" class="form-control d-inline col-9" id="channel_name" aria-describedby="channel" placeholder="Add a channel">
-          <button type="submit" name="button" class="btn add-btn" id="add-btn">
+          <button type="submit" name="button" class="btn" id="add-btn">
             <img src="{{url_for('static', filename='Images/add.png')}}" class="" width="30" height="30">
           </button>
 
@@ -109,7 +105,7 @@
 
             <div id="channel-view">
 
-              <img src="{{url_for('static', filename='Images/channel.jpg')}}" width="48" height="48" id="channel-image" alt="">
+              <img src="{{url_for('static', filename='Images/channel.jpg')}}" width="48" height="48" id="channel-image" data-channel="{{channel}}" onclick="open_channel(event)" alt="">
               <a id="channel-text" href="" data-channel="{{channel}}" onclick="open_channel(event)">#{{channel}}</a>
 
             </div>
@@ -120,22 +116,76 @@
 
       </div>
 
-      <div class="col-9 float-right mt-3" id="message-box">
+      <div class="col-12 col-sm-12 col-md-9 float-right mt-3" id="message-box">
 
         <div id="message-top">
 
-          <div id="channel-top" class="pt-1 pl-2">
+          <div id="channel-top" class="pl-2">
 
-            <img src="{{url_for('static', filename='Images/channel.jpg')}}" width="40" height="40" id="channel-image" alt="" style="border-radius: 50%;">
+            <img src="{{url_for('static', filename='Images/hashtag.png')}}" width="25" height="25" id="hashtag-image" alt="">
             <span style="font-weight: bold;" id="channel-top-name">No channel chosen</span>
+
+            <button data-toggle="modal" data-target="#channel-modal" type="button" class="d-inline d-sm-inline d-md-none float-right btn mb-1 mr-2" id="channel-btn" name="button">
+
+              <img src="{{url_for('static', filename='Images/channel-icon.png')}}" width="18" height="18" alt="">
+              <span>channels</span>
+
+            </button>
+
+            <div class="modal fade" id="channel-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Channels</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form class="mt-4 mb-3" id="channel-modal" action="" method="">
+
+                      <input type="text" name="channel-name" class="form-control d-inline col-9" id="channel-name-modal" aria-describedby="channel" placeholder="Add a channel">
+                      <button type="submit" name="button" class="btn" id="add-btn">
+                        <img src="{{url_for('static', filename='Images/add.png')}}" class="" width="30" height="30">
+                      </button>
+
+                    </form>
+
+                    <div class="" id="channels-modal">
+                      {% for channel in channels %}
+
+                        <div id="channel-view">
+
+                          <img src="{{url_for('static', filename='Images/channel.jpg')}}" width="48" height="48" id="channel-image-modal" data-channel="{{channel}}" onclick="open_channel(event)" alt="">
+                          <a id="channel-text-modal" href="" data-channel="{{channel}}" onclick="open_channel(event)">#{{channel}}</a>
+
+                        </div>
+
+                      {% endfor %}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
 
-          <div id="messages" class="h-100">
+        </div>
 
-            <div id="sending-messages" class="ml-xl-4 w-100">
+        <div id="messages" class="mt-2">
 
-            </div>
+          <div class="" id="show-messages">
+
+          </div>
+
+
+          <div class="container-fluid d-block mx-auto">
+
+            <form id="sending-messages" class="w-100 row d-block mx-auto">
+
+            </form>
 
           </div>
 
@@ -150,6 +200,12 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script>
+
+      var messages = {{ messages|safe }};
+
+    </script>
 
   </body>
 

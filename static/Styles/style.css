@@ -1,5 +1,5 @@
 * {
-  font-family: Arial;
+  font-family: "Varela Round";
 }
 
 html, body {
@@ -7,44 +7,37 @@ html, body {
   padding: 10px;
 }
 
-.flack-title {
+#flack-title {
   font-size: 21px;
 }
 
-.center {
-  position: relative;
-  height: 55px;
+#profile:hover {
+  cursor: default;
 }
 
-.profile {
-  margin: 0;
-  position: absolute;
-  top: 35%;
-  right: 0;
-  transform: translate(0, -50%);
+#display-name-show {
+  color: #267cb5;
+  font-weight: 600;
 }
 
-.profile-icon {
-  border-radius: 50%;
-  padding: 0;
+#logout {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-.profile-icon:focus {
-  outline: white solid 0px;
-  box-shadow: none;
+#logout:hover {
+  cursor: pointer;
+  color: #0056b3;
+  text-decoration: underline;
 }
 
-.profile-name {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.add-btn {
+#add-btn {
   padding: 0;
   padding-left: 5px;
 }
 
-.add-btn:focus {
+#add-btn:focus {
   outline: white solid 0px;
   box-shadow: none;
 }
@@ -71,9 +64,23 @@ html, body {
   margin: 15px 0px;
 }
 
+@keyframes border-radius {
+  from {
+    border-radius: 50%;
+  }
+  to {
+    border-radius: 10%;
+  }
+}
 #channel-image {
-  border-radius: 10%;
+  border-radius: 50%;
   margin-right: 8px;
+  transition: 1s;
+}
+
+#channel-image:hover {
+  border-radius: 10%;
+  cursor: pointer;
 }
 
 #channel-text {
@@ -83,6 +90,51 @@ html, body {
 #channel-text:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+#channel-image-modal {
+  border-radius: 50%;
+  margin-right: 8px;
+  transition: 1s;
+}
+
+#channel-image-modal:hover {
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+#channel-text-modal {
+  color: #87888a;
+}
+
+#channel-text-modal:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#channel-top {
+  color: #267cb5;
+  padding-top: 8px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+#channel-top:hover {
+  cursor: default;
+}
+
+#channel-btn {
+  color: white;
+  border: 1px solid #267cb5;
+  border-radius: 50%;
+  padding: 2px 15px;
+  border-radius: 15px;
+  background-color: #267cb5;
+}
+
+#channel-btn:hover {
+  background-color: #2278b1;
+  border-color: #1e74ad;
 }
 
 #message-box {
@@ -95,6 +147,88 @@ html, body {
 #message-top {
   height: 50px;
   border-bottom: 1px solid #d7e1e8;
+}
+
+#messages {
+  height: 90%;
+}
+
+#show-messages {
+  height: 90%;
+  overflow: auto;
+}
+
+@keyframes delete {
+  0% {
+    opacity: 1;
+    height: 62px;
+  }
+  75% {
+    opacity: 0;
+    height: 62px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+  }
+}
+.both-message {
+  height: 62px;
+  animation-name: delete;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}
+
+.else-message {
+  background-color: #267cb5;
+  color: white;
+  margin-left: 10px;
+  padding: 7px 15px;
+  border-radius: 15px;
+}
+
+.my-message {
+  display: inline-block;
+  float: right;
+  color: #267cb5;
+  margin-right: 10px;
+  padding: 7px 15px;
+  border: 1px solid #267cb5;
+  border-radius: 15px;
+}
+
+.else-message > .message-sender {
+  font-size: 12px;
+  padding-right: 3px;
+}
+
+.else-message > .message-date {
+  float: right;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.my-message > .message-sender {
+  font-size: 12px;
+  color: #87888a;
+  padding-right: 5px;
+}
+
+.my-message > .message-date {
+  float: right;
+  font-size: 12px;
+  color: #87888a;
+  margin-top: 4px;
+}
+
+.delete-image {
+  float: right;
+  margin-left: 10px;
+}
+
+#delete-image:hover {
+  cursor: pointer;
 }
 
 #sending-messages {
