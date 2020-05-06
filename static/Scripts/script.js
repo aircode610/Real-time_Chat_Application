@@ -110,6 +110,7 @@ function message_show(messages){
         delete_img.setAttribute("src", "static/Images/delete.png");
         delete_img.setAttribute("width", "20");
         delete_img.setAttribute("height", "20");
+        delete_img.setAttribute("onclick", "delete_msg()");
         delete_img.className = "delete-image";
         message_span.appendChild(delete_img);
 
@@ -154,6 +155,31 @@ function message_show(messages){
     }
 
   }
+
+}
+
+function delete_msg(){
+
+  var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+  var all_messages = document.querySelector("#show-messages").childNodes;
+  var index = 0;
+
+  for (message of all_messages){
+
+    if (message.nodeName == "DIV"){
+
+      if (message == event.target.parentElement.parentElement){
+        break;
+      }
+
+      index += 1;
+
+    }
+
+  }
+
+  socket.emit("delete message myself", { 'index' :  index, 'channel' : localStorage.getItem("channel")});
 
 }
 
@@ -268,102 +294,128 @@ document.addEventListener('DOMContentLoaded', () => {
     var message = data["message"];
     var date = data["date"];
     var dn = data["name"];
-    var channel = localStorage.getItem("channel");
+    var channel = data["channel"];
 
-    if (channel in messages){
+    if (channel == localStorage.getItem("channel")){
+      if (channel in messages){
 
-      if (messages[channel].length == 100){
-        messages[channel].splice(0, 1);
-        document.querySelector("#show-messages").removeChild(document.querySelector("#show-messages").childNodes[0]);
+        if (messages[channel].length == 100){
+          messages[channel].splice(0, 1);
+          document.querySelector("#show-messages").removeChild(document.querySelector("#show-messages").childNodes[0]);
+        }
+
+        messages[channel].push( { 'channel' :  channel,'message' : message, 'date' : date, 'name' : dn } );
+      }
+      else{
+        messages[channel] = [{ 'channel' :  channel,'message' : message, 'date' : date, 'name' : dn }]
       }
 
-      messages[channel].push( { 'channel' :  channel,'message' : message, 'date' : date, 'name' : dn } );
+      if (dn == localStorage.getItem("name")){
+
+        var message_container = document.createElement("DIV");
+        message_container.className = "mt-2 d-block both-message";
+
+        var message_span = document.createElement("SPAN");
+        message_span.className = "my-message";
+
+        var message_sender = document.createElement("SPAN");
+        var m_sender = document.createTextNode(dn + " ");
+        message_sender.appendChild(m_sender);
+        message_sender.className = "message-sender";
+        message_span.appendChild(message_sender);
+
+        var message_date = document.createElement("SPAN");
+        var m_date = document.createTextNode(date);
+        message_date.appendChild(m_date);
+        message_date.className = "message-date";
+        message_span.appendChild(message_date);
+
+        var bre = document.createElement("BR");
+        message_span.appendChild(bre);
+
+        var message_text = document.createTextNode(message);
+        message_text.className = "message-text";
+        message_span.appendChild(message_text);
+
+        var delete_img = document.createElement("IMG");
+        delete_img.setAttribute("src", "static/Images/delete.png");
+        delete_img.setAttribute("width", "20");
+        delete_img.setAttribute("height", "20");
+        delete_img.setAttribute("onclick", "delete_msg()");
+        delete_img.className = "delete-image";
+        message_span.appendChild(delete_img);
+
+        message_container.appendChild(message_span);
+
+        document.querySelector("#show-messages").appendChild(message_container);
+
+      }
+      else{
+
+        var message_container = document.createElement("DIV");
+        message_container.className = "mt-2 d-block both-message";
+
+        var message_span = document.createElement("SPAN");
+        message_span.className = "else-message d-inline-block";
+
+        var message_sender = document.createElement("SPAN");
+        var m_sender = document.createTextNode(dn + " ");
+        message_sender.appendChild(m_sender);
+        message_sender.className = "message-sender";
+        message_span.appendChild(message_sender);
+
+        var message_date = document.createElement("SPAN");
+        var m_date = document.createTextNode(date);
+        message_date.appendChild(m_date);
+        message_date.className = "message-date";
+        message_span.appendChild(message_date);
+
+        var bre = document.createElement("BR");
+        message_span.appendChild(bre);
+
+        var message_text = document.createTextNode(message);
+        message_text.className = "message-text";
+        message_span.appendChild(message_text);
+
+        message_container.appendChild(message_span);
+
+        document.querySelector("#show-messages").appendChild(message_container);
+
+      }
     }
     else{
-      messages[channel] = [{ 'channel' :  channel,'message' : message, 'date' : date, 'name' : dn }]
-    }
-
-    if (dn == localStorage.getItem("name")){
-
-      var message_container = document.createElement("DIV");
-      message_container.className = "mt-2 d-block both-message";
-
-      var message_span = document.createElement("SPAN");
-      message_span.className = "my-message";
-
-      var message_sender = document.createElement("SPAN");
-      var m_sender = document.createTextNode(dn + " ");
-      message_sender.appendChild(m_sender);
-      message_sender.className = "message-sender";
-      message_span.appendChild(message_sender);
-
-      var message_date = document.createElement("SPAN");
-      var m_date = document.createTextNode(date);
-      message_date.appendChild(m_date);
-      message_date.className = "message-date";
-      message_span.appendChild(message_date);
-
-      var bre = document.createElement("BR");
-      message_span.appendChild(bre);
-
-      var message_text = document.createTextNode(message);
-      message_text.className = "message-text";
-      message_span.appendChild(message_text);
-
-      var delete_img = document.createElement("IMG");
-      delete_img.setAttribute("src", "static/Images/delete.png");
-      delete_img.setAttribute("width", "20");
-      delete_img.setAttribute("height", "20");
-      delete_img.className = "delete-image";
-      message_span.appendChild(delete_img);
-
-      message_container.appendChild(message_span);
-
-      document.querySelector("#show-messages").appendChild(message_container);
-
-    }
-    else{
-
-      var message_container = document.createElement("DIV");
-      message_container.className = "mt-2 d-block both-message";
-
-      var message_span = document.createElement("SPAN");
-      message_span.className = "else-message d-inline-block";
-
-      var message_sender = document.createElement("SPAN");
-      var m_sender = document.createTextNode(dn + " ");
-      message_sender.appendChild(m_sender);
-      message_sender.className = "message-sender";
-      message_span.appendChild(message_sender);
-
-      var message_date = document.createElement("SPAN");
-      var m_date = document.createTextNode(date);
-      message_date.appendChild(m_date);
-      message_date.className = "message-date";
-      message_span.appendChild(message_date);
-
-      var bre = document.createElement("BR");
-      message_span.appendChild(bre);
-
-      var message_text = document.createTextNode(message);
-      message_text.className = "message-text";
-      message_span.appendChild(message_text);
-
-      message_container.appendChild(message_span);
-
-      document.querySelector("#show-messages").appendChild(message_container);
-
+      return false;
     }
 
   });
 
-  socket.on('delete show message', data => {
+  socket.on('delete message animation', data => {
 
-    element = data["target"];
+    if (data["channel"] != localStorage.getItem("channel")) {
+      return false;
+    }
 
-    element.parentElement.style.aimationPlayState = 'running';
-    element.parentElement.addEventListener('animationend', () => {
-      element.parentElement.remove();
+    all_messages = document.querySelector("#show-messages").childNodes;
+    index = 0;
+
+    for (message of all_messages){
+
+      if (message.nodeName == "DIV"){
+
+        if (index == data["index"]){
+          element = message;
+          break;
+        }
+
+        index += 1;
+
+      }
+
+    }
+
+    element.style.animationPlayState = 'running';
+    element.addEventListener('animationend', () => {
+      element.remove();
     });
 
   });
@@ -408,14 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#send-input').value = "";
 
     return false;
-
-  };
-
-  document.querySelector('.delete-image').onclick = () => {
-
-    var message_text = event.target.previousSibling.textContent;
-
-    socket.emit("delete message", { 'message' :  message_text, 'channel' : localStorage.getItem("channel"), 'target' : event.target });
 
   };
 
