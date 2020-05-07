@@ -33,21 +33,18 @@ def add(data):
 
 @socketio.on("add message")
 def message(data):
-    room = data["channel"]
 
     if len(messages[data["channel"]]) == 100:
         del messages[data["channel"]][0]
 
     messages[data["channel"]].append( { 'message' : data["message"], 'date' : data["date"], 'name' : data["name"] } )
 
-    emit("show message", { 'message' : data["message"], 'date' : data["date"], 'name' : data["name"] }, broadcast=True)
+    emit("show message", { 'message' : data["message"], 'channel' : data["channel"], 'date' : data["date"], 'name' : data["name"] }, broadcast=True)
 
 
-@socketio.on("delete message")
-def delete(data):
+@socketio.on("delete message myself")
+def delete_msg(data):
 
-    for message in messages["channel"]:
-        if message["message"] == data["message"]:
-            messages["channel"].remove(message)
+    del messages[data["channel"]][data["index"]]
 
-    emit("delete show message", { 'message' : data["message"], 'channel' : data["channel"], 'target' : data["target"] }, broadcast=True)
+    emit("delete message animation", { 'index' : data["index"], 'channel' : data["channel"] }, broadcast=True)

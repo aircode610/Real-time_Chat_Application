@@ -189,8 +189,8 @@ html, body {
 }
 
 .my-message {
-  display: inline-block;
-  float: right;
+  position: absolute;
+  right: 0;
   color: $default_blue;
   margin-right: 10px;
   padding: 7px 15px;
@@ -227,7 +227,7 @@ html, body {
   margin-left: 10px;
 }
 
-#delete-image:hover {
+.delete-image:hover {
   cursor: pointer;
 }
 
